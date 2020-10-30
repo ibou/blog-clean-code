@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -17,25 +19,36 @@ class Post
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      * @ORM\Column
+     * @Assert\NotBlank()
+     * @Assert\Length(min="5")
      */
-    private $title;
+    private ?string $title;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
      */
-    private $publishedAt;
+    private DateTimeImmutable $publishedAt;
+
+    /**
+     * @var string|null
+     * @ORM\Column
+     */
+    private ?string $image = null;
+
 
     /**
      * @var string
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Assert\Length(min="6")
      */
-    private $content;
+    private string $content;
 
     /**
      * @var Collection
@@ -49,7 +62,7 @@ class Post
      */
     public function __construct()
     {
-        $this->publishedAt = new \DateTimeImmutable();
+        $this->publishedAt = new DateTimeImmutable();
         $this->comments = new ArrayCollection();
     }
 
@@ -62,9 +75,9 @@ class Post
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -78,25 +91,42 @@ class Post
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return DateTimeImmutable
      */
-    public function getPublishedAt(): \DateTimeImmutable
+    public function getPublishedAt(): DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
     /**
-     * @param \DateTimeImmutable $publishedAt
+     * @param DateTimeImmutable $publishedAt
      */
-    public function setPublishedAt(\DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getContent(): string
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     */
+    public function setImage(?string $image): void
+    {
+        $this->image = $image;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -109,6 +139,7 @@ class Post
         $this->content = $content;
     }
 
+
     /**
      * @return Collection
      */
@@ -116,4 +147,5 @@ class Post
     {
         return $this->comments;
     }
+
 }

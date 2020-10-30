@@ -22,7 +22,10 @@ class CommentType extends AbstractType
     {
         $builder
             ->add("author", TextType::class, [
-                "label" => "Pseudo :"
+                "label" => "Pseudo :",
+                'attr' => ['class' => 'form-control'],
+                'row_attr' => ['class' => 'form-group'],
+                'label_attr' => ['class' => 'form-group-label'],
             ])
             ->add("content", TextareaType::class, [
                 "label" => "Votre message :"

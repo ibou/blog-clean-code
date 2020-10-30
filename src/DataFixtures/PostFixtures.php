@@ -19,10 +19,11 @@ class PostFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 1; $i <= 25; $i++) {
+        for ($i = 1; $i <= 123; $i++) {
             $post = new Post();
             $post->setTitle("Article N°" . $i);
             $post->setContent("Contenu N°" . $i);
+            $post->setImage('https://via.placeholder.com/468x140?text=Visit+Blogging.com+Now');
             $manager->persist($post);
 
             for ($j = 1; $j <= rand(5, 15); $j++) {
