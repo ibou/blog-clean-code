@@ -6,15 +6,15 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Form\PostType;
-use App\Uploader\Uploader;
+use App\Security\Voter\PostVoter;
 use App\Uploader\UploaderInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * Class BlogController
@@ -63,12 +63,17 @@ class BlogController extends AbstractController
      * @param Post $post
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function read(Post $post, Request $request): Response
     {
         $comment = new Comment();
         $comment->setPost($post);
+
+        if($this->isGranted('ROLE_USER')){
+            $comment->setUser($this->getUser());
+            //$comment->setAuthor($this->getUser()->getPseudo());
+        }
 
 
         $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
@@ -98,6 +103,7 @@ class BlogController extends AbstractController
         Request $request,
         UploaderInterface $uploader
     ): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $post = new Post();
         $form = $this->createForm(
             PostType::class,
@@ -109,11 +115,13 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $file */
             $file = $form->get('file')->getData();
+            $post->setUser($this->getUser());
             $post->setImage($uploader->upload($file));
             $this->getDoctrine()->getManager()->persist($post);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute("blog_index");
         }
+
 
         return $this->render(
             'blog/create.html.twig',
@@ -134,6 +142,7 @@ class BlogController extends AbstractController
      */
     public function update(Request $request, Post $post, UploaderInterface $uploader): Response
     {
+        $this->denyAccessUnlessGranted(PostVoter::EDIT, $post);
         $form = $this->createForm(PostType::class, $post)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 

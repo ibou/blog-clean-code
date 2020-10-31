@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Log In Form! {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h2>Log In </h2>
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.password) }}
+                <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Log In</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

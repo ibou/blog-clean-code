@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -57,8 +58,15 @@ class Post
     private $comments;
 
     /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     */
+    private ?User $user;
+
+
+
+    /**
      * Post constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
@@ -146,6 +154,18 @@ class Post
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

@@ -32,7 +32,6 @@ class PostType extends AbstractType
                     'row_attr' => ['class' => 'form-group'],
                     'label_attr' => ['class' => 'form-group-label'],
                     'help_attr' => ['class'=> 'form-control'],
-                    'help' => 'Veuillez saisir le titre du post !!!!',
                 ]
             )
             ->add(
