@@ -20,9 +20,10 @@ class Comment
 
     /**
      * @ORM\Column(nullable=true)
-     * @Assert\Length(min="3", max="10")
+     * @Assert\NotBlank(groups={"anonymous"})
+     * @Assert\Length(min="3", groups={"anonymous"})
      */
-    private ?string $author;
+    private ?string $author = null;
 
     /**
      * @var string

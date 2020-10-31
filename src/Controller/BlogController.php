@@ -72,11 +72,13 @@ class BlogController extends AbstractController
 
         if($this->isGranted('ROLE_USER')){
             $comment->setUser($this->getUser());
-            //$comment->setAuthor($this->getUser()->getPseudo());
         }
 
 
-        $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+        $form = $this->createForm(CommentType::class, $comment,
+            [
+                "validation_groups" => $this->isGranted("ROLE_USER") ? "Default" : ["Default", "anonymous"]
+            ]) ->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist($comment);
             $this->getDoctrine()->getManager()->flush();
@@ -122,7 +124,6 @@ class BlogController extends AbstractController
             return $this->redirectToRoute("blog_index");
         }
 
-
         return $this->render(
             'blog/create.html.twig',
             [
@@ -152,7 +153,6 @@ class BlogController extends AbstractController
             if(null !== $file){
                 $post->setImage($uploader->upload($file));
             }
-
 
             $this->getDoctrine()->getManager()->flush();
 

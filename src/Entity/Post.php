@@ -63,7 +63,6 @@ class Post
     private ?User $user;
 
 
-
     /**
      * Post constructor.
      * @throws Exception
