@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
-use App\Form\CommentType;
-use App\Form\PostType;
+use App\Handler\CommentHandler;
+use App\Handler\PostHandler;
 use App\Security\Voter\PostVoter;
-use App\Uploader\UploaderInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,27 +59,26 @@ class BlogController extends AbstractController
      * @Route("/article-{id}", name="blog_read")
      * @param Post $post
      * @param Request $request
+     * @param CommentHandler $commentHandler
      * @return Response
-     * @throws Exception
      */
-    public function read(Post $post, Request $request): Response
-    {
+    public function read(
+        Post $post,
+        Request $request,
+        CommentHandler $commentHandler
+    ): Response {
         $comment = new Comment();
         $comment->setPost($post);
 
-        if($this->isGranted('ROLE_USER')){
+        if ($this->isGranted('ROLE_USER')) {
             $comment->setUser($this->getUser());
         }
 
 
-        $form = $this->createForm(CommentType::class, $comment,
-            [
-                "validation_groups" => $this->isGranted("ROLE_USER") ? "Default" : ["Default", "anonymous"]
-            ]) ->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->persist($comment);
-            $this->getDoctrine()->getManager()->flush();
-
+        $options = [
+            "validation_groups" => $this->isGranted("ROLE_USER") ? "Default" : ["Default", "anonymous"],
+        ];
+        if ($commentHandler->handle($request, $comment, $options)) {
             return $this->redirectToRoute("blog_read", ["id" => $post->getId()]);
         }
 
@@ -90,7 +86,7 @@ class BlogController extends AbstractController
             "blog/read.html.twig",
             [
                 "post" => $post,
-                "form" => $form->createView(),
+                "form" => $commentHandler->createView(),
             ]
         );
     }
@@ -98,36 +94,27 @@ class BlogController extends AbstractController
     /**
      * @Route("/publier-article", name="blog_create")
      * @param Request $request
-     * @param UploaderInterface $uploader
+     * @param PostHandler $postHandler
      * @return Response
      */
     public function create(
         Request $request,
-        UploaderInterface $uploader
+        PostHandler $postHandler
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $post = new Post();
-        $form = $this->createForm(
-            PostType::class,
-            $post,
-            [
-                "validation_groups" => ['Default', 'create'],
-            ]
-        )->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $file */
-            $file = $form->get('file')->getData();
-            $post->setUser($this->getUser());
-            $post->setImage($uploader->upload($file));
-            $this->getDoctrine()->getManager()->persist($post);
-            $this->getDoctrine()->getManager()->flush();
+        $options = [
+            "validation_groups" => ['Default', 'create'],
+        ];
+        $post->setUser($this->getUser());
+        if ($postHandler->handle($request, $post, $options)) {
             return $this->redirectToRoute("blog_index");
         }
 
         return $this->render(
             'blog/create.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $postHandler->createView(),
             ]
 
         );
@@ -138,31 +125,24 @@ class BlogController extends AbstractController
      * @Route("/modifier-article/{id}", name="blog_update")
      * @param Request $request
      * @param Post $post
-     * @param UploaderInterface $uploader
+     * @param PostHandler $postHandler
      * @return Response
      */
-    public function update(Request $request, Post $post, UploaderInterface $uploader): Response
-    {
+    public function update(
+        Request $request,
+        Post $post,
+        PostHandler $postHandler
+    ): Response {
         $this->denyAccessUnlessGranted(PostVoter::EDIT, $post);
-        $form = $this->createForm(PostType::class, $post)->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $file */
-            $file = $form->get('file')->getData();
-
-            if(null !== $file){
-                $post->setImage($uploader->upload($file));
-            }
-
-            $this->getDoctrine()->getManager()->flush();
-
+        if ($postHandler->handle($request, $post)) {
             return $this->redirectToRoute("blog_read", ["id" => $post->getId()]);
         }
 
         return $this->render(
             'blog/update.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $postHandler->createView(),
             ]
         );
 
