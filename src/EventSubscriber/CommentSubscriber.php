@@ -4,6 +4,7 @@
 namespace App\EventSubscriber;
 
 
+use App\Entity\Comment;
 use App\Event\ReverseEvent;
 use App\Event\TransferEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +37,9 @@ class CommentSubscriber implements EventSubscriberInterface
      */
     public function onTransfer(TransferEvent $event): void
     {
+        if (!$event->getOriginalData() instanceof Comment){
+            return;
+        }
         $event->getData()->setAuthor($event->getOriginalData()->getAuthor());
         $event->getData()->setContent($event->getOriginalData()->getContent());
 
@@ -46,6 +50,9 @@ class CommentSubscriber implements EventSubscriberInterface
      */
     public function onReverse(ReverseEvent $event): void
     {
+        if (!$event->getOriginalData() instanceof Comment){
+            return;
+        }
         if ($this->security->isGranted('ROLE_USER')) {
             $event->getOriginalData()->setUser($this->security->getUser());
         }

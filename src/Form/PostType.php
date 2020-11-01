@@ -4,7 +4,7 @@
 namespace App\Form;
 
 
-use App\Entity\Post;
+use App\DataTransferObject\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,8 +41,7 @@ class PostType extends AbstractType
                     'label' => 'Contenu : ',
                 ]
             )
-        ->add('file', FileType::class,[
-            'mapped'=>false,
+        ->add('image', FileType::class,[
             'required'=>false,
             'constraints'=>[
                 new Image(),
