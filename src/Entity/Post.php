@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -23,12 +22,10 @@ class Post
     private int $id;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column
-     * @Assert\NotBlank()
-     * @Assert\Length(min="5")
      */
-    private ?string $title;
+    private ?string $title = null;
 
     /**
      * @var DateTimeImmutable
@@ -46,10 +43,8 @@ class Post
     /**
      * @var string
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     * @Assert\Length(min="6")
      */
-    private string $content;
+    private ?string $content = null;
 
     /**
      * @var Collection
@@ -90,12 +85,13 @@ class Post
     }
 
     /**
-     * @param string $title
+     * @param string|null $title
      */
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
+
 
     /**
      * @return DateTimeImmutable

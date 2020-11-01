@@ -59,7 +59,6 @@ abstract class AbstractHandler implements HandlerInterface
         if ($this->form->isSubmitted() && $this->form->isValid()) {
             $this->eventDispatcher->dispatch(new ReverseEvent($data, $originalData), ReverseEvent::NAME);
             $this->process($originalData);
-
             return true;
         }
 
