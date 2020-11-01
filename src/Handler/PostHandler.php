@@ -4,6 +4,7 @@
 namespace App\Handler;
 
 
+use App\Entity\Post;
 use App\Form\PostType;
 use App\Uploader\UploaderInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -56,5 +57,10 @@ class PostHandler extends AbstractHandler
             $this->entityManager->persist($data);
         }
         $this->entityManager->flush();
+    }
+
+    protected function getDataTransferObject(): object
+    {
+        //return new Post();
     }
 }

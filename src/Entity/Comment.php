@@ -20,8 +20,6 @@ class Comment
 
     /**
      * @ORM\Column(nullable=true)
-     * @Assert\NotBlank(groups={"anonymous"})
-     * @Assert\Length(min="3", groups={"anonymous"})
      */
     private ?string $author = null;
 
@@ -29,7 +27,7 @@ class Comment
      * @var string
      * @ORM\Column(type="text")
      */
-    private ?string $content;
+    private ?string $content = null;
 
     /**
      * @var \DateTimeImmutable

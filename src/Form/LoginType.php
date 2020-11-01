@@ -4,7 +4,7 @@
 namespace App\Form;
 
 
-use App\DataTransfertObject\Credentials;
+use App\DataTransferObject\Credentials;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

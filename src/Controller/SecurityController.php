@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DataTransfertObject\Credentials;
+use App\DataTransferObject\Credentials;
 use App\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
