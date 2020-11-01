@@ -4,7 +4,7 @@
 namespace App\Security\Guard;
 
 
-use App\DataTransfertObject\Credentials;
+use App\DataTransferObject\Credentials;
 use App\Form\LoginType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

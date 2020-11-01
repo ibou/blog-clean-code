@@ -14,11 +14,11 @@ interface HandlerInterface
 {
     /**
      * @param Request $request
-     * @param $data
+     * @param object $originalData
      * @param array $options
      * @return bool
      */
-    public function handle(Request $request, $data, array $options = []): bool;
+    public function handle(Request $request, object $originalData, array $options = []): bool;
 
     /**
      * @return FormView

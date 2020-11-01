@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\DataTransfertObject;
+namespace App\DataTransferObject;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Credentials
- * @package App\DataTransfertObject
+ * @package App\DataTransferObject
  */
 class Credentials
 {

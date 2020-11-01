@@ -70,11 +70,6 @@ class BlogController extends AbstractController
         $comment = new Comment();
         $comment->setPost($post);
 
-        if ($this->isGranted('ROLE_USER')) {
-            $comment->setUser($this->getUser());
-        }
-
-
         $options = [
             "validation_groups" => $this->isGranted("ROLE_USER") ? "Default" : ["Default", "anonymous"],
         ];

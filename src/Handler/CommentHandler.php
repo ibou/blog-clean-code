@@ -3,6 +3,7 @@
 
 namespace App\Handler;
 
+use App\DataTransferObject\Comment;
 use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -43,4 +44,11 @@ class CommentHandler extends AbstractHandler
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
+
+    protected function getDataTransferObject(): object
+    {
+        return new Comment();
+    }
+
+
 }
