@@ -42,7 +42,6 @@ class CommentSubscriber implements EventSubscriberInterface
         }
         $event->getData()->setAuthor($event->getOriginalData()->getAuthor());
         $event->getData()->setContent($event->getOriginalData()->getContent());
-
     }
 
     /**
