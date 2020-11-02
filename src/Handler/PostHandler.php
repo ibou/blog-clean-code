@@ -26,9 +26,8 @@ class PostHandler extends AbstractHandler
         $this->entityManager = $entityManager;
     }
 
-
     /**
-     * @inheritDoc
+     * @return string
      */
     protected function getFormType(): string
     {
@@ -36,7 +35,7 @@ class PostHandler extends AbstractHandler
     }
 
     /**
-     * @inheritDoc
+     * @param mixed $data
      */
     protected function process($data): void
     {
@@ -46,6 +45,9 @@ class PostHandler extends AbstractHandler
         $this->entityManager->flush();
     }
 
+    /**
+     * @return object
+     */
     protected function getDataTransferObject(): object
     {
         return new Post();
