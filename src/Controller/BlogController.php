@@ -9,6 +9,15 @@ use App\Handler\PostHandler;
 use App\Presenter\PresenterInterface;
 use App\Security\Voter\PostVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+
+use App\Paginator\CommentPaginator;
+use App\Paginator\PostPaginator;
+use App\Repository\PostRepository;
+use App\Representation\Representation;
+use App\Representation\RepresentationBuilderInterface;
+use App\Representation\RepresentationFactoryInterface;
+use App\Representation\RepresentationInterface;
+
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,43 +52,21 @@ class BlogController
 
 
     /**
-     * @Route("/", name="blog_index")
+     * @Route("/", name="index")
      * @param Request $request
-     * @param ManagerRegistry $managerRegistry
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @param RepresentationFactoryInterface $representationFactory
      */
     public function index(
         Request $request,
-        ManagerRegistry $managerRegistry
+        RepresentationFactoryInterface $representationFactory
     ): Response {
-        $limit = (int)$request->get('limit', 10);
-        $page = (int)$request->get('page', 1);
-        $page = ($page > 0) ? $page : '1';
-        /** @var Paginator $posts */
-        $posts = $managerRegistry->getRepository(Post::class)->getPaginatedPosts(
-            $page,
-            $limit
-        );
-        $pages = ceil($posts->count() / $limit);
-
-        $range = range(
-            max($page - 3, 1),
-            min($page + 3, $pages)
-        );
- 
+        $representation = $representationFactory->create(PostPaginator::class)->handleRequest($request);
 
         return new Response(
             $this->twig->render(
                 "blog/index.html.twig",
                 [
-                    "posts" => $posts,
-                    "pages" => $pages,
-                    "page" => $page,
-                    "limit" => $limit,
-                    'range' => $range,
+                    "representation" => $representation->paginate()
                 ]
             )
         );
@@ -92,6 +79,7 @@ class BlogController
      * @param CommentHandler $commentHandler
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param UrlGeneratorInterface $urlGenerator
+     * @param RepresentationFactoryInterface $representationFactory
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -102,8 +90,10 @@ class BlogController
         Request $request,
         CommentHandler $commentHandler,
         AuthorizationCheckerInterface $authorizationChecker,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        RepresentationFactoryInterface $representationFactory
     ): Response {
+        $representation = $representationFactory->create(CommentPaginator::class)->handleRequest($request);
         $comment = new Comment();
         $comment->setPost($post);
         $options = [
@@ -119,6 +109,12 @@ class BlogController
                 [
                     "post" => $post,
                     "form" => $commentHandler->createView(),
+                    "representation" => $representation->paginate([
+                        "post" => $post,
+                        "route_params" => [
+                            "id" => $post->getId()
+                        ]
+                    ])
                 ]
             )
         );
@@ -145,7 +141,7 @@ class BlogController
             "validation_groups" => ['Default', 'create'],
         ];
         if ($postHandler->handle($request, $post, $options)) {
-            return new RedirectResponse($urlGenerator->generate("blog_index"));
+            return new RedirectResponse($urlGenerator->generate("index"));
         }
 
         return new Response(
