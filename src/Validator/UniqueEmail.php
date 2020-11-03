@@ -16,6 +16,6 @@ class UniqueEmail extends Constraint
     /**
      * @var string
      */
-    public string $message = 'L\'adresse email "{{ value }}" existe déjà !!';
+    public string $message = 'L\'adresse email "{{ value }}" existe déjà /!\ ';
 
 }
