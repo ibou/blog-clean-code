@@ -6,6 +6,7 @@ use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,19 +22,12 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $page
-     * @param int $limit
-     * @return Paginator
+     * Undocumented function
+     *
+     * @return QueryBuilder
      */
-    public function getPaginatedPosts(int $page, int $limit): Paginator
+    public function getPaginatedPosts(): QueryBuilder
     {
-        return new Paginator(
-            $this->createQueryBuilder("p")
-                ->addSelect('c')
-                ->leftJoin('p.comments', 'c')
-                ->setFirstResult(($page - 1) * $limit)
-                ->setMaxResults($limit)
-                ->orderBy('p.id', 'DESC')
-        );
+        return $this->createQueryBuilder("p");
     }
 }

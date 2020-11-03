@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Representation;
 
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
@@ -29,9 +28,9 @@ class RepresentationFactory implements RepresentationFactoryInterface
     /**
      * @inheritDoc
      */
-    public function create(string $paginator): void
+    public function create(string $paginator): RepresentationInterface
     {
-
+        $representation = $this->serviceLocator->get(RepresentationInterface::class);
+        return $representation->setPaginator($this->serviceLocator->get($paginator));
     }
-
 }
