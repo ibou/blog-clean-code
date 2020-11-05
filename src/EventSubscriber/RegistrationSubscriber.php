@@ -4,13 +4,11 @@
 namespace App\EventSubscriber;
 
 
-use App\Entity\Comment;
 use App\Entity\User;
 use App\Event\ReverseEvent;
 use App\Event\TransferEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Class RegistrationSubscriber

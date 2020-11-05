@@ -43,6 +43,8 @@ class PostType extends AbstractType
             )
         ->add('image', FileType::class,[
             'required'=>false,
+            'attr' => ['class' => 'form-control'],
+            'label_attr' => ['class' => 'form-group'],
             'constraints'=>[
                 new Image(),
                 new NotNull([
