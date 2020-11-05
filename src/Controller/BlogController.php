@@ -6,19 +6,17 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Handler\CommentHandler;
 use App\Handler\PostHandler;
-use App\Presenter\PresenterInterface;
+use App\Presenter\ListingPostsPresenterInterface;
+use App\Presenter\ReadPostPresenterInterface;
+use App\Responder\ListingPostsResponder;
+use App\Responder\ReadPostResponder;
+use App\Responder\RedirectReadPostResponder;
 use App\Security\Voter\PostVoter;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use App\Paginator\CommentPaginator;
 use App\Paginator\PostPaginator;
-use App\Repository\PostRepository;
-use App\Representation\Representation;
-use App\Representation\RepresentationBuilderInterface;
 use App\Representation\RepresentationFactoryInterface;
-use App\Representation\RepresentationInterface;
-
-use Doctrine\Persistence\ManagerRegistry;
+use http\Params;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,22 +53,19 @@ class BlogController
      * @Route("/", name="index")
      * @param Request $request
      * @param RepresentationFactoryInterface $representationFactory
+     * @param ListingPostsPresenterInterface $presenter
+     * @return Response
      */
     public function index(
         Request $request,
-        RepresentationFactoryInterface $representationFactory
+        RepresentationFactoryInterface $representationFactory,
+        ListingPostsPresenterInterface $presenter
     ): Response {
         $representation = $representationFactory->create(PostPaginator::class)->handleRequest($request);
 
-        return new Response(
-            $this->twig->render(
-                "blog/index.html.twig",
-                [
-                    "representation" => $representation->paginate()
-                ]
-            )
-        );
+        return $presenter->present(new ListingPostsResponder($representation->paginate()));
     }
+
 
     /**
      * @Route("/article-{id}", name="blog_read")
@@ -78,20 +73,17 @@ class BlogController
      * @param Request $request
      * @param CommentHandler $commentHandler
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param UrlGeneratorInterface $urlGenerator
      * @param RepresentationFactoryInterface $representationFactory
+     * @param ReadPostPresenterInterface $presenter
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function read(
         Post $post,
         Request $request,
         CommentHandler $commentHandler,
         AuthorizationCheckerInterface $authorizationChecker,
-        UrlGeneratorInterface $urlGenerator,
-        RepresentationFactoryInterface $representationFactory
+        RepresentationFactoryInterface $representationFactory,
+        ReadPostPresenterInterface $presenter
     ): Response {
         $representation = $representationFactory->create(CommentPaginator::class)->handleRequest($request);
         $comment = new Comment();
@@ -100,22 +92,21 @@ class BlogController
             "validation_groups" => $authorizationChecker->isGranted("ROLE_USER") ? "Default" : ["Default", "anonymous"],
         ];
         if ($commentHandler->handle($request, $comment, $options)) {
-            return new RedirectResponse($urlGenerator->generate("blog_read", ["id" => $post->getId()]));
+            return $presenter->redirect(new RedirectReadPostResponder($post));
         }
 
-        return new Response(
-            $this->twig->render(
-                "blog/read.html.twig",
-                [
-                    "post" => $post,
-                    "form" => $commentHandler->createView(),
-                    "representation" => $representation->paginate([
+        return $presenter->present(
+            new ReadPostResponder(
+                $post,
+                $representation->paginate(
+                    [
                         "post" => $post,
                         "route_params" => [
-                            "id" => $post->getId()
-                        ]
-                    ])
-                ]
+                            "id" => $post->getId(),
+                        ],
+                    ]
+                ),
+                $commentHandler->createView()
             )
         );
     }
