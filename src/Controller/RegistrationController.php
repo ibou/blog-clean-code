@@ -3,50 +3,32 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
 use App\Handler\RegistrationHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
+use App\Presenter\RegistrationPresenterInterface;
+use App\Responder\RegistrationResponder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Twig\Environment;
 
 class RegistrationController
 {
     /**
      * @Route("/registration", name="registration")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $userPasswordEncoder
-     * @param Environment $twig
      * @param RegistrationHandler $registrationHandler
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param RegistrationPresenterInterface $presenter
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function __invoke(
         Request $request,
-        UserPasswordEncoderInterface $userPasswordEncoder,
-        Environment $twig,
         RegistrationHandler $registrationHandler,
-        UrlGeneratorInterface $urlGenerator
+        RegistrationPresenterInterface $presenter
     ): Response {
         if ($registrationHandler->handle($request, new User())) {
-            return new RedirectResponse($urlGenerator->generate("security_login"));
+            return $presenter->redirect();
         }
 
-        return new Response(
-            $twig->render(
-                'registration/registration.html.twig',
-                [
-                    'form' => $registrationHandler->createView(),
-                ]
-            )
-        );
+        return $presenter->present(new RegistrationResponder($registrationHandler->createView()));
     }
 }

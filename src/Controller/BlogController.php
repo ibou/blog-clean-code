@@ -16,7 +16,6 @@ use App\Security\Voter\PostVoter;
 use App\Paginator\CommentPaginator;
 use App\Paginator\PostPaginator;
 use App\Representation\RepresentationFactoryInterface;
-use http\Params;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
