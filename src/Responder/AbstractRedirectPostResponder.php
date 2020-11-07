@@ -33,6 +33,4 @@ class AbstractRedirectPostResponder
         return $this->post;
     }
 
-
-
 }

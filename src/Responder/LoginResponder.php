@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormView;
  */
 class LoginResponder
 {
-
     private FormView $form;
 
     /**
@@ -23,6 +22,7 @@ class LoginResponder
         $this->form = $form;
     }
 
+
     /**
      * @return FormView
      */
@@ -30,8 +30,4 @@ class LoginResponder
     {
         return $this->form;
     }
-
-
-
-
 }
