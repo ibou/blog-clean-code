@@ -1,0 +1,12 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  App\Domain\Security\:
+    resource: '../../*'
+
+  App\Domain\Security\Controller\:
+    resource: '../../Controller'
+    tags: ['controller.service_arguments']
+
