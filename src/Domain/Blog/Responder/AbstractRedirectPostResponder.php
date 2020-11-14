@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Responder;
 
-
 use App\Application\Entity\Post;
 
 /**
