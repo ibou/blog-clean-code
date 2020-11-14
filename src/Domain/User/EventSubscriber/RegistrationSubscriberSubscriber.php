@@ -1,30 +1,26 @@
 <?php
 
-
 namespace App\Domain\User\EventSubscriber;
 
-
-use App\Domain\User\DataTransferObject\User;
+use App\Application\Entity\User;
 use App\Infrastructure\Event\ReverseEvent;
 use App\Infrastructure\Event\TransferEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * Class RegistrationSubscriber
+ * Class RegistrationSubscriberSubscriber
  * @package App\Domain\User\EventSubscriber
  */
-class RegistrationSubscriber implements EventSubscriberInterface
+class RegistrationSubscriberSubscriber implements EventSubscriberInterface
 {
-
-
     /**
      * @var UserPasswordEncoderInterface
      */
     private UserPasswordEncoderInterface $userPasswordEncoder;
 
     /**
-     * RegistrationSubscriber constructor.
+     * RegistrationSubscriberSubscriber constructor.
      * @param UserPasswordEncoderInterface $userPasswordEncoder
      */
     public function __construct(UserPasswordEncoderInterface $userPasswordEncoder)
@@ -32,12 +28,14 @@ class RegistrationSubscriber implements EventSubscriberInterface
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-
+    /**
+     * @inheritDoc
+     */
     public static function getSubscribedEvents()
     {
         return [
             TransferEvent::NAME => "onTransfer",
-            ReverseEvent::NAME => "onReverse",
+            ReverseEvent::NAME => "onReverse"
         ];
     }
 
@@ -46,6 +44,7 @@ class RegistrationSubscriber implements EventSubscriberInterface
      */
     public function onTransfer(TransferEvent $event): void
     {
+        return;
     }
 
     /**
@@ -56,6 +55,7 @@ class RegistrationSubscriber implements EventSubscriberInterface
         if (!$event->getOriginalData() instanceof User) {
             return;
         }
+
         $event->getOriginalData()->setPseudo($event->getData()->getPseudo());
         $event->getOriginalData()->setPassword(
             $this->userPasswordEncoder->encodePassword($event->getOriginalData(), $event->getData()->getPassword())

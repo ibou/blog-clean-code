@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Controller;
 
-
 use App\Application\Entity\Post;
 use App\Application\Security\Voter\PostVoter;
 use App\Domain\Blog\Handler\PostHandler;
@@ -33,7 +32,7 @@ class Update
     ): Response {
         $this->denyAccessUnlessGranted(PostVoter::EDIT, $post);
 
-        if($postHandler->handle($request, $post)) {
+        if ($postHandler->handle($request, $post)) {
             return $presenter->redirect(new RedirectUpdatePostResponder($post));
         }
 

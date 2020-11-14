@@ -2,7 +2,7 @@
 
 namespace App\Application\DataFixtures;
 
-use App\Entity\User;
+use App\Application\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,7 +26,6 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-
         for ($i = 1; $i <= 10; $i++) {
             $user = new User();
             $user->setEmail(sprintf("email%d@gmail.com", $i));
@@ -37,5 +36,4 @@ class UserFixtures extends Fixture
         }
         $manager->flush();
     }
-
 }

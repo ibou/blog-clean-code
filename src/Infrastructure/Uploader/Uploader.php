@@ -3,7 +3,6 @@
 
 namespace App\Infrastructure\Uploader;
 
-
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -43,7 +42,6 @@ class Uploader implements UploaderInterface
      */
     public function upload(UploadedFile $file): string
     {
-
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
         $filename = sprintf(

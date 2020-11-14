@@ -2,7 +2,6 @@
 
 namespace App\Domain\Blog\Handler;
 
-
 use App\Domain\Blog\DataTransferObject\Comment;
 use App\Domain\Blog\Form\CommentType;
 use App\Infrastructure\Handler\AbstractHandler;
@@ -50,6 +49,4 @@ class CommentHandler extends AbstractHandler
     {
         return new Comment();
     }
-
-
 }

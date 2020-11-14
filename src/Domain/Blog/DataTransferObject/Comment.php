@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\DataTransferObject;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Comment
@@ -53,5 +52,4 @@ class Comment
     {
         $this->content = $content;
     }
-
 }

@@ -3,13 +3,11 @@
 
 namespace App\Domain\Blog\Presenter;
 
-
 use App\Domain\Blog\Responder\ListingPostsResponder;
 use App\Domain\Blog\Responder\RedirectReadPostResponder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-
 
 /**
  * Class ListingPostsPresenter
@@ -52,6 +50,4 @@ class ListingPostsPresenter implements ListingPostsPresenterInterface
             )
         );
     }
-
-
 }

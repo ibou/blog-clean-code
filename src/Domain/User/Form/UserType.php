@@ -46,7 +46,7 @@ class UserType extends AbstractType
                     'invalid_message' => 'La confirmation n\'est pas similaire au mot de passe.',
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['min' => 8]),
+                        new Length(['min' => 3]),
                     ],
                 ]
             )

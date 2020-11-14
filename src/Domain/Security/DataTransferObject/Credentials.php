@@ -63,6 +63,4 @@ class Credentials
     {
         $this->password = $password;
     }
-
-
 }

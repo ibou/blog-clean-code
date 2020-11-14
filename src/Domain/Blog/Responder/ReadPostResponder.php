@@ -3,9 +3,8 @@
 
 namespace App\Domain\Blog\Responder;
 
-
-use App\Entity\Post;
-use App\Representation\RepresentationInterface;
+use App\Application\Entity\Post;
+use App\Infrastructure\Representation\RepresentationInterface;
 use Symfony\Component\Form\FormView;
 
 class ReadPostResponder
@@ -61,8 +60,4 @@ class ReadPostResponder
     {
         return $this->form;
     }
-
-
-
-
 }

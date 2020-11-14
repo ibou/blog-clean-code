@@ -27,11 +27,11 @@ class LoginPresenter implements LoginPresenterInterface
     {
         return new Response(
             $this->twig->render(
-               'security/login.html.twig',
-               [
+                'security/login.html.twig',
+                [
                    'form' => $responder->getForm()
                ]
-           )
+            )
         );
     }
 }

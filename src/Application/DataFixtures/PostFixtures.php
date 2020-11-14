@@ -2,8 +2,8 @@
 
 namespace App\Application\DataFixtures;
 
-use App\Entity\Comment;
-use App\Entity\Post;
+use App\Application\Entity\Comment;
+use App\Application\Entity\Post;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

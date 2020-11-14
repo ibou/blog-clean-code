@@ -7,8 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -18,17 +16,19 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class CommentType extends AbstractType
 {
-    private AuthorizationCheckerInterface $authorization;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * CommentType constructor.
-     * @param AuthorizationCheckerInterface $authorization
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(AuthorizationCheckerInterface $authorization)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->authorization = $authorization;
+        $this->authorizationChecker = $authorizationChecker;
     }
-
 
     /**
      * @inheritDoc
@@ -36,33 +36,16 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                "content",
-                TextareaType::class,
-                [
-                    "label" => "Votre message :",
-                ]
-            );
+            ->add("content", TextareaType::class, [
+                "label" => "Votre message :"
+            ])
+        ;
 
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $events) {
-
-                if(!$this->authorization->isGranted('ROLE_USER')){
-                    $events->getForm()->add(
-                        "author",
-                        TextType::class,
-                        [
-                            "label" => "Pseudo :",
-                            'attr' => ['class' => 'form-control'],
-                            'row_attr' => ['class' => 'form-group'],
-                            'label_attr' => ['class' => 'form-group-label'],
-                        ]
-                    );
-                }
-
-            }
-        );
+        if (!$this->authorizationChecker->isGranted("ROLE_USER")) {
+            $builder->add("author", TextType::class, [
+                "label" => "Pseudo :"
+            ]);
+        }
     }
 
     /**

@@ -3,7 +3,6 @@
 
 namespace App\Domain\User\Handler;
 
-
 use App\Domain\User\DataTransferObject\User;
 use App\Domain\User\Form\UserType;
 use App\Infrastructure\Handler\AbstractHandler;
@@ -32,7 +31,7 @@ class RegistrationHandler extends AbstractHandler
 
     protected function getDataTransferObject(): object
     {
-         return new User();
+        return new User();
     }
 
     /**

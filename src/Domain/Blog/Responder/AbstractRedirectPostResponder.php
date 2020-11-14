@@ -3,7 +3,8 @@
 
 namespace App\Domain\Blog\Responder;
 
-use App\Entity\Post;
+
+use App\Application\Entity\Post;
 
 /**
  * Class AbstractRedirectPostResponder
@@ -32,5 +33,4 @@ class AbstractRedirectPostResponder
     {
         return $this->post;
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Domain\Blog\Presenter;
 
-
 use App\Domain\Blog\Responder\AbstractEditPostResponder;
 use App\Domain\Blog\Responder\AbstractRedirectPostResponder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -61,6 +60,4 @@ abstract class AbstractEditPostPresenter implements EditPostPresenterInterface
             )
         );
     }
-
-
 }

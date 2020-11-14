@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Handler;
 
-
 use App\Domain\Blog\DataTransferObject\Post;
 use App\Domain\Blog\Form\PostType;
 use App\Infrastructure\Handler\AbstractHandler;

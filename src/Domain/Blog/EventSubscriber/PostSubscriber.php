@@ -3,7 +3,7 @@
 
 namespace App\Domain\Blog\EventSubscriber;
 
-
+use App\Application\Entity\Post;
 use App\Infrastructure\Event\ReverseEvent;
 use App\Infrastructure\Event\TransferEvent;
 use App\Infrastructure\Uploader\UploaderInterface;
@@ -53,7 +53,7 @@ class PostSubscriber implements EventSubscriberInterface
      */
     public function onTransfer(TransferEvent $event): void
     {
-        if (!$event->getOriginalData() instanceof Post){
+        if (!$event->getOriginalData() instanceof Post) {
             return;
         }
         $event->getData()->setTitle($event->getOriginalData()->getTitle());
@@ -65,7 +65,7 @@ class PostSubscriber implements EventSubscriberInterface
      */
     public function onReverse(ReverseEvent $event): void
     {
-        if (!$event->getOriginalData() instanceof Post){
+        if (!$event->getOriginalData() instanceof Post) {
             return;
         }
         /** @var UploadedFile $file */

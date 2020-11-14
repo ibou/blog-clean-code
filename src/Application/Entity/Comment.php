@@ -142,6 +142,4 @@ class Comment
     {
         $this->user = $user;
     }
-
-
 }

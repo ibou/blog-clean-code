@@ -11,5 +11,4 @@ use App\Entity\Post;
  */
 class RedirectReadPostResponder extends AbstractRedirectPostResponder
 {
-
 }

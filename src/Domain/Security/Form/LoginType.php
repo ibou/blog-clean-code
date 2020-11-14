@@ -3,7 +3,6 @@
 
 namespace App\Domain\Security\Form;
 
-
 use App\Domain\Security\DataTransferObject\Credentials;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -15,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Class LoginType
  * @package App\Domain\Security\Form
  */
-class LoginType extends  AbstractType
+class LoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,5 +45,4 @@ class LoginType extends  AbstractType
     {
         $resolver->setDefault('data_class', Credentials::class);
     }
-
 }
