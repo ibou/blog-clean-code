@@ -2,10 +2,8 @@
 
 namespace App\Domain\User\DataTransferObject;
 
-use App\Application\Validator\{
-    UniquePseudo,
-    UniqueEmail
-};
+use App\Application\Validator\UniquePseudo;
+use App\Application\Validator\UniqueEmail;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,7 +23,7 @@ class User
     /**
      * @var string|null
      * @Assert\NotBlank
-     * @Assert\Length(min=8)
+     * @Assert\Length(min=3)
      */
     private ?string $password = null;
 

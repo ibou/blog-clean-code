@@ -3,7 +3,6 @@
 
 namespace App\Application\Validator;
 
-
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -17,5 +16,4 @@ class UniquePseudo extends Constraint
      * @var string
      */
     public string $message = 'Le Pseudo "{{ value }}" existe déjà !!';
-
 }

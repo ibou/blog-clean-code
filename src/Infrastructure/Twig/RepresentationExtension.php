@@ -59,5 +59,4 @@ class RepresentationExtension extends AbstractExtension
             ]
         ));
     }
-
 }

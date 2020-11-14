@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Representation;
 
-
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**

@@ -3,7 +3,6 @@
 
 namespace App\Domain\Security\Presenter;
 
-
 use App\Domain\Security\Responder\LoginResponder;
 use Symfony\Component\HttpFoundation\Response;
 

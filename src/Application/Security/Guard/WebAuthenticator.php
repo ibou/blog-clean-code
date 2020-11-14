@@ -3,7 +3,6 @@
 
 namespace App\Application\Security\Guard;
 
-
 use App\Domain\Security\DataTransferObject\Credentials;
 use App\Domain\Security\Form\LoginType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -53,7 +52,6 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-
     }
 
     public function supports(Request $request)
@@ -99,13 +97,10 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
 
         return new RedirectResponse($this->urlGenerator->generate('index'));
     }
-
-
 }

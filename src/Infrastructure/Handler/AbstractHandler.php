@@ -3,7 +3,6 @@
 
 namespace App\Infrastructure\Handler;
 
-
 use App\Infrastructure\Event\ReverseEvent;
 use App\Infrastructure\Event\TransferEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -87,8 +86,4 @@ abstract class AbstractHandler implements HandlerInterface
     {
         $this->eventDispatcher = $eventDispatcher;
     }
-
-
-
-
 }

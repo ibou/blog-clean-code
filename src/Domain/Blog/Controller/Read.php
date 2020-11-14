@@ -41,8 +41,8 @@ class Read
         $options = [
             "validation_groups" => $this->isGranted("ROLE_USER") ? "Default" : ["Default", "anonymous"],
         ];
-
         if ($commentHandler->handle($request, $comment, $options)) {
+
             return $presenter->redirect(new RedirectReadPostResponder($post));
         }
 

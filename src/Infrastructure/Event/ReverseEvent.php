@@ -3,7 +3,6 @@
 
 namespace App\Infrastructure\Event;
 
-
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -50,6 +49,4 @@ class ReverseEvent extends Event
     {
         return $this->originalData;
     }
-
-
 }

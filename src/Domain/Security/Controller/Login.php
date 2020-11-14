@@ -3,7 +3,6 @@
 
 namespace App\Domain\Security\Controller;
 
-
 use App\Domain\Security\DataTransferObject\Credentials;
 use App\Domain\Security\Form\LoginType;
 use App\Domain\Security\Presenter\LoginPresenterInterface;
@@ -40,5 +39,4 @@ class Login
 
         return $loginPresenter->present(new LoginResponder($form->createView()));
     }
-
 }

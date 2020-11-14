@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Presenter;
 
-
 use App\Domain\Blog\Responder\ReadPostResponder;
 use App\Domain\Blog\Responder\RedirectReadPostResponder;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ReadPostPresenterInterface
 {
-
     public function redirect(RedirectReadPostResponder $response): Response;
 
     /**

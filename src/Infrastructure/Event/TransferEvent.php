@@ -3,7 +3,6 @@
 
 namespace App\Infrastructure\Event;
 
-
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -53,6 +52,4 @@ class TransferEvent extends Event
     {
         return $this->data;
     }
-
-
 }

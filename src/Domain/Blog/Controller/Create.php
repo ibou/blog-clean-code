@@ -35,10 +35,9 @@ class Create
             "validation_groups" => ["Default", "create"]
         ];
 
-        if($postHandler->handle($request, $post, $options)) {
+        if ($postHandler->handle($request, $post, $options)) {
             return $presenter->redirect(new RedirectCreatePostResponder($post));
         }
-
         return $presenter->present(new CreatePostResponder($postHandler->createView()));
     }
 }

@@ -14,7 +14,4 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface CreatePostPresenterInterface extends EditPostPresenterInterface
 {
-
-
-
 }

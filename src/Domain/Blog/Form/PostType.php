@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Form;
 
-
 use App\Domain\Blog\DataTransferObject\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -41,7 +40,7 @@ class PostType extends AbstractType
                     'label' => 'Contenu : ',
                 ]
             )
-        ->add('image', FileType::class,[
+        ->add('image', FileType::class, [
             'required'=>false,
             'attr' => ['class' => 'form-control'],
             'label_attr' => ['class' => 'form-group'],
@@ -58,6 +57,4 @@ class PostType extends AbstractType
     {
         $resolver->setDefault('data_class', Post::class);
     }
-
-
 }

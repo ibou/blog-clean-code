@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Presenter;
 
-
 /**
  * Class UpdatePostPresenterextends
  * @package App\Domain\Blog\Presenter
@@ -14,5 +13,4 @@ class UpdatePostPresenter extends AbstractEditPostPresenter implements UpdatePos
     {
         return "blog/update.html.twig";
     }
-
 }

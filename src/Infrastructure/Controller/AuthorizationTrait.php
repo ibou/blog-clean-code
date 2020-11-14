@@ -48,5 +48,4 @@ trait AuthorizationTrait
     {
         return $this->authorizationChecker->isGranted($attribute, $subject);
     }
-
 }

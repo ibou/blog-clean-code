@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Responder;
 
-
 use Symfony\Component\Form\FormView;
 
 abstract class AbstractEditPostResponder
@@ -30,5 +29,4 @@ abstract class AbstractEditPostResponder
     {
         return $this->form;
     }
-
 }

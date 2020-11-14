@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Responder;
 
-
 use App\Infrastructure\Representation\RepresentationInterface;
 
 /**
@@ -33,8 +32,4 @@ class ListingPostsResponder
     {
         return $this->representation;
     }
-
-
-
-
 }

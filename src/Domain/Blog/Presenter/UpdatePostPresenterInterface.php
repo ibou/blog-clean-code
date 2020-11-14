@@ -3,7 +3,6 @@
 
 namespace App\Domain\Blog\Presenter;
 
-
 use App\Domain\Blog\Responder\RedirectUpdatePostResponder;
 use App\Domain\Blog\Responder\UpdatePostResponder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,5 +14,4 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface UpdatePostPresenterInterface extends EditPostPresenterInterface
 {
-
 }

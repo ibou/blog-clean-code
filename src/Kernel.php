@@ -47,7 +47,6 @@ class Kernel extends BaseKernel
         $domainDir = $this->getProjectDir().'/src/Domain';
 
         $loader->load($domainDir.'/**/Resources/config/{services}'.self::CONFIG_EXTS, 'glob');
-
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -68,6 +67,4 @@ class Kernel extends BaseKernel
         $container->registerExtension(new RepresentationExtension());
         $container->addCompilerPass(new RepresentationPass());
     }
-
-
 }

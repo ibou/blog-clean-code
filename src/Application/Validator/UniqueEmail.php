@@ -3,7 +3,6 @@
 
 namespace App\Application\Validator;
 
-
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -17,5 +16,4 @@ class UniqueEmail extends Constraint
      * @var string
      */
     public string $message = 'L\'adresse email "{{ value }}" existe déjà /!\ ';
-
 }
