@@ -1,22 +1,25 @@
 <?php
 
-
 namespace App\Domain\Blog\DataTransferObject;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class Comment
+ * @package App\Domain\Blog\DataTransferObject
+ */
 class Comment
 {
     /**
      * @var string|null
      * @Assert\NotBlank(groups={"anonymous"})
-     * @Assert\Length(min="3", groups={"anonymous"})
+     * @Assert\Length(min=2, groups={"anonymous"})
      */
     private ?string $author = null;
 
     /**
      * @var string|null
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(min=5)
      */
     private ?string $content = null;

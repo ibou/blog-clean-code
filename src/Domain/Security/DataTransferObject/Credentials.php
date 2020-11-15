@@ -13,13 +13,13 @@ class Credentials
 {
     /**
      * @var string|null
-     * Assert\NotBlank()
+     * @Assert\NotBlank()
      */
     private ?string $username = null;
 
     /**
      * @var string|null
-     * Assert\NotBlank()
+     * @Assert\NotBlank()
      */
     private ?string $password = null;
 

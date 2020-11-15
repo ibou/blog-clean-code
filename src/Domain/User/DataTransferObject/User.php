@@ -30,6 +30,7 @@ class User
     /**
      * @var string|null
      * @Assert\NotBlank
+     * @Assert\Length(min=3)
      * @UniquePseudo
      */
     private ?string $pseudo = null;

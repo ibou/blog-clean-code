@@ -30,6 +30,9 @@ abstract class AbstractHandler implements HandlerInterface
      */
     private EventDispatcherInterface $eventDispatcher;
 
+    /**
+     * @return object
+     */
     abstract protected function getDataTransferObject(): object;
 
     /**
