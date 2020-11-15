@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Representation;
 
 use Countable;
-use Doctrine\ORM\QueryBuilder;
 use Iterator;
 use Symfony\Component\HttpFoundation\Request;
 
