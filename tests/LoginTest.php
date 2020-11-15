@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,5 +91,4 @@ class LoginTest extends WebTestCase
             "Username and||or Password is||are not valid.",
         ];
     }
-
 }

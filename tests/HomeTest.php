@@ -14,12 +14,11 @@ class HomeTest extends WebTestCase
      * @param string $uri
      */
 
-    public  function testHome(string $uri): void
+    public function testHome(string $uri): void
     {
         $client = static::createClient();
         $client->request(Request::METHOD_GET, $uri);
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
-
     }
 
 
@@ -29,6 +28,4 @@ class HomeTest extends WebTestCase
         yield ['/?page=2'];
         yield ['?page=2&limit=25&field=p.title&order=desc'];
     }
-
-
 }
