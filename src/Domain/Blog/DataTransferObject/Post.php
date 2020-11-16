@@ -5,12 +5,16 @@ namespace App\Domain\Blog\DataTransferObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class Post
+ * @package App\Domain\Blog\DataTransferObject
+ */
 class Post
 {
-
     /**
      * @var string|null
      * @Assert\NotBlank
+     * @Assert\Length(min=6)
      */
     private ?string $title = null;
 
@@ -23,8 +27,8 @@ class Post
 
     /**
      * @var string|null
-     * @Assert\NotBlank()
-     * @Assert\Length(min="6")
+     * @Assert\NotBlank
+     * @Assert\Length(min=10)
      */
     private ?string $content = null;
 

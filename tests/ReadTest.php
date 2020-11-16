@@ -10,17 +10,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * Class ReadTest
+ * @package App\Tests
+ * @group read
+ */
 class ReadTest extends WebTestCase
 {
     use AuthenticationTrait;
 
-    public function testSuccessfulWithoutAuthentication()
+    public function testSuccessfulWithAuthentication()
     {
-        $client = static::createClient();
-        /** @var UrlGeneratorInterface $router */
+        $client = static::createAuthenticatedClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
+
         /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var Post $post */
         $post = $entityManager->getRepository(Post::class)->findOneBy([]);
@@ -29,28 +36,74 @@ class ReadTest extends WebTestCase
 
         $crawler = $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate('blog_read', ['id' => $post->getId()])
+            $urlGenerator->generate("blog_read", ["id" => $post->getId()])
         );
-        self::assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $form = $crawler->filter("form[name=comment]")
-            ->form(
-                [
-                    "comment[author]" => 'author999',
-                    "comment[content]" => 'Nouveau commentaire content',
-                ]
-            );
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $this->assertSelectorTextContains('html h1', $post->getTitle());
+
+        $form = $crawler->filter('form[name=comment]')->form(
+            [
+                'comment[content]' => 'Nouveau commentaire',
+            ]
+        );
+
         $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $client->followRedirect();
 
-        $this->assertSelectorTextContains("html", "Nouveau commentaire content");
+        $crawler = $client->followRedirect();
 
-        $this->assertSame($count, $post->getComments()->count());
+        $this->assertSelectorTextContains('html', 'Nouveau commentaire');
 
         $this->assertCount(
-            ($count + 1) > 10 ? 10 : $count + 1,
+            ($count + 1) > 10 ? 10 : ($count + 1),
+            $crawler->filter('html main ul:not(.pagination) li')
+        );
+    }
+
+    public function testSuccessfulWithoutAuthentication()
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Post $post */
+        $post = $entityManager->getRepository(Post::class)->findOneBy([]);
+
+        $count = $post->getComments()->count();
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("blog_read", ["id" => $post->getId()])
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $this->assertSelectorTextContains('html h1', $post->getTitle());
+
+        $form = $crawler->filter('form[name=comment]')->form(
+            [
+                'comment[author]' => 'Author',
+                'comment[content]' => 'Nouveau commentaire',
+            ]
+        );
+
+        $client->submit($form);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $crawler = $client->followRedirect();
+
+        $this->assertSelectorTextContains('html', 'Nouveau commentaire');
+
+        $this->assertCount(
+            ($count + 1) > 10 ? 10 : ($count + 1),
             $crawler->filter('html main ul:not(.pagination) li')
         );
     }
@@ -94,59 +147,20 @@ class ReadTest extends WebTestCase
         yield [
             [
                 'comment[author]' => 'Author',
-                'comment[content]' => ''
+                'comment[content]' => '',
             ],
-            'This value should not be blank.'
+            'This value should not be blank.',
         ];
-
 
 
         yield [
             [
                 'comment[author]' => 'Author',
-                'comment[content]' => 'Fail'
+                'comment[content]' => 'Fail',
             ],
-            'This value is too short. It should have 5 characters or more.'
+            'This value is too short. It should have 10 characters or more.',
         ];
     }
 
-    public function testSuccessfulWithAuthentication()
-    {
-        $client = static::createClient();
-        /** @var UrlGeneratorInterface $router */
-        $urlGenerator = $client->getContainer()->get("router");
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
 
-        /** @var Post $post */
-        $post = $entityManager->getRepository(Post::class)->findOneBy([]);
-
-        $count = $post->getComments()->count();
-
-        $crawler = $client->request(
-            Request::METHOD_GET,
-            $urlGenerator->generate('blog_read', ['id' => $post->getId()])
-        );
-        self::assertResponseStatusCodeSame(Response::HTTP_OK);
-
-        $form = $crawler->filter("form[name=comment]")
-            ->form(
-                [
-                    "comment[content]" => 'Nouveau commentaire content',
-                ]
-            );
-        $client->submit($form);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $client->followRedirect();
-
-        $this->assertSelectorTextContains("html", "Nouveau commentaire content");
-
-        $this->assertSame($count, $post->getComments()->count());
-
-        $this->assertCount(
-            ($count + 1) > 10 ? 10 : $count + 1,
-            $crawler->filter('html main ul:not(.pagination) li')
-        );
-    }
 }
