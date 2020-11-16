@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Domain\Blog\Form;
 
 use App\Domain\Blog\DataTransferObject\Post;
@@ -19,42 +18,29 @@ use Symfony\Component\Validator\Constraints\NotNull;
  */
 class PostType extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'title',
-                TextType::class,
-                [
-                    'label' => 'Titre : ',
-                    'attr' => ['class' => 'form-control'],
-                    'row_attr' => ['class' => 'form-group'],
-                    'label_attr' => ['class' => 'form-group-label'],
-                    'help_attr' => ['class'=> 'form-control'],
-                ]
-            )
-            ->add(
-                'content',
-                TextareaType::class,
-                [
-                    'label' => 'Contenu : ',
-                ]
-            )
-        ->add('image', FileType::class, [
-            'required'=>false,
-            'attr' => ['class' => 'form-control'],
-            'label_attr' => ['class' => 'form-group'],
-            'constraints'=>[
-                new Image(),
-                new NotNull([
-                    'groups'=>'create'
-                ])
-            ]
-        ]);
+            ->add('title', TextType::class, [
+                "label" => "Titre :"
+            ])
+            ->add("content", TextareaType::class, [
+                "label" => "Article :"
+            ])
+            ->add("image", FileType::class, [
+                "required" => false
+            ])
+        ;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', Post::class);
+        $resolver->setDefault("data_class", Post::class);
     }
 }

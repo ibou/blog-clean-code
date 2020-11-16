@@ -20,7 +20,7 @@ class Comment
     /**
      * @var string|null
      * @Assert\NotBlank()
-     * @Assert\Length(min=5)
+     * @Assert\Length(min=10)
      */
     private ?string $content = null;
 

@@ -3,8 +3,8 @@
 
 namespace App\Infrastructure\Controller;
 
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Trait AuthorizationTrait
