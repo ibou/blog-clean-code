@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Application\Security\Guard;
+namespace App\Domain\Security\Guard;
 
 use App\Domain\Security\DataTransferObject\Credentials;
 use App\Domain\Security\Form\LoginType;

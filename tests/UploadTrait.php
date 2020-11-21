@@ -3,7 +3,6 @@
 
 namespace App\Tests;
 
-
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -24,7 +23,7 @@ trait UploadTrait
         $format_dest = __DIR__.DIRECTORY_SEPARATOR."../public/uploads/%s";
         $file = sprintf($format_dest, $filename);
         copy(__DIR__.DIRECTORY_SEPARATOR.'images/image-test.jpg', $file);
-         return new UploadedFile(
+        return new UploadedFile(
             $file,
             $filename,
             null,

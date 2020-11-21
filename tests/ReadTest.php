@@ -161,6 +161,4 @@ class ReadTest extends WebTestCase
             'This value is too short. It should have 10 characters or more.',
         ];
     }
-
-
 }

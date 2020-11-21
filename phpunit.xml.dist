@@ -19,12 +19,14 @@
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+            <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
+
     <extensions>
         <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
+
     <logging>
         <log type="coverage-html" target="build/coverage" lowUpperBound="35" highLowerBound="70"/>
     </logging>
@@ -32,10 +34,16 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
+            <exclude>
+                <directory suffix=".php">src/Application/DataFixtures</directory>
+                <directory suffix=".php">src/Infrastructure/DependencyInjection</directory>
+                <file>src/Kernel.php</file>
+            </exclude>
         </whitelist>
     </filter>
 
+
     <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" /> 
     </listeners>
 </phpunit>
