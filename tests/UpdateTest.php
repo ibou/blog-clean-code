@@ -3,6 +3,9 @@
 
 namespace App\Tests;
 
+use App\Application\Entity\Post;
+use App\Application\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,27 +13,44 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Class CreateTest
+ * Class UpdateTest
  * @package App\Tests
- * @group create
+ * @group update
  */
-class CreateTest extends WebTestCase
+class UpdateTest extends WebTestCase
 {
     use AuthenticationTrait;
     use UploadTrait;
 
     public function testAccessDenied()
     {
-        $client = static::createClient();
+        $client = static::createAuthenticatedClient();
 
         /** @var UrlGeneratorInterface $router */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate('blog_create'));
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $client->followRedirect();
-        $this->assertRouteSame('security_login');
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->findOneByEmail("email1@gmail.com");
+
+        /** @var Post $post */
+        $post = $entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Post::class, 'p')
+            ->where("p.user != :user")
+            ->setParameter('user', $user)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+
+        $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("blog_update", ["id" => $post->getId()])
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testSuccessful()
@@ -40,7 +60,19 @@ class CreateTest extends WebTestCase
         /** @var UrlGeneratorInterface $router */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate('blog_create'));
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->findOneByEmail("email1@gmail.com");
+
+        /** @var Post $post */
+        $post = $entityManager->getRepository(Post::class)->findOneBy(["user" => $user]);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("blog_update", ["id" => $post->getId()])
+        );
 
         $form = $crawler->filter("form[name=post]")
             ->form(
@@ -67,7 +99,19 @@ class CreateTest extends WebTestCase
         /** @var UrlGeneratorInterface $router */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate('blog_create'));
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->findOneByEmail("email1@gmail.com");
+
+        /** @var Post $post */
+        $post = $entityManager->getRepository(Post::class)->findOneBy(["user" => $user]);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("blog_update", ["id" => $post->getId()])
+        );
 
         $form = $crawler->filter("form[name=post]")
             ->form(
@@ -109,40 +153,6 @@ class CreateTest extends WebTestCase
                 "post[image]" => static::createImage(),
             ],
             ' This value is too short. It should have 6 characters or more.',
-        ];
-
-        yield [
-            [
-                'post[title]' => 'a title long title',
-                'post[content]' => '2sh',
-                "post[image]" => static::createImage(),
-            ],
-            ' This value is too short. It should have 10 characters or more.',
-        ];
-
-        yield [
-            [
-                'post[title]' => 'a title long title',
-                'post[content]' => 'a long content is read',
-            ],
-            'cannot be null',
-        ];
-
-        yield [
-            [
-                'post[title]' => 'a title long title',
-                'post[content]' => 'a long content is read',
-            ],
-            'cannot be null',
-        ];
-
-        yield [
-            [
-                'post[title]' => 'a title long title',
-                'post[content]' => 'a content  teste here',
-                'post[image]' => static::createTextFile(),
-            ],
-            'This file is not a valid image.',
         ];
     }
 }

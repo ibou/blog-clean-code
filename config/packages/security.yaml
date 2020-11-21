@@ -18,7 +18,7 @@ security:
         path: security_logout
       guard:
         authenticators:
-          - App\Application\Security\Guard\WebAuthenticator
+          - App\Domain\Security\Guard\WebAuthenticator
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#firewalls-authentication
