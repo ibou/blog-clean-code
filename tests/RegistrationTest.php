@@ -3,7 +3,6 @@
 
 namespace App\Tests;
 
-
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +11,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RegistrationTest extends WebTestCase
 {
-
     public function testSuccessful()
     {
         $client = static::createClient();
